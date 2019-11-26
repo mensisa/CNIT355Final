@@ -25,7 +25,6 @@ import java.util.List;
  * 2. Start foreground service
  * 3. Music storage
  * 4. Music buttons onClick handler
- *
  */
 
 public class MusicPlayerService extends Service {
@@ -124,7 +123,7 @@ public class MusicPlayerService extends Service {
          * Register MusicPlayReceiver
          */
         musicPlayReceiver = new MusicPlayReceiver();
-        IntentFilter filter = new IntentFilter("com.xkfeng.MUSCIPLAY_BROADCAST");
+        IntentFilter filter = new IntentFilter("MUSCIPLAY_BROADCAST");
         registerReceiver(musicPlayReceiver, filter);
 
 
@@ -228,15 +227,13 @@ public class MusicPlayerService extends Service {
         else {
 
             Intent intent1 = new Intent();
-            intent1.setAction("com.xkfeng.MUSCI_BROADCAST");
+            intent1.setAction("MUSCI_BROADCAST");
             intent1.putExtra("currentTime", mediaPlayer.getCurrentPosition());
             mediaPlayer.stop();
             mediaPlayer = mediaPlayerr;
             sendBroadcast(intent1);
         }
-        /*
-        更新前台服务
-         */
+        // update foreground notification
         updateNotification();
 
     }
@@ -273,7 +270,7 @@ public class MusicPlayerService extends Service {
                     remoteViews.setImageViewResource(R.id.remoteViewPlayBtn, R.mipmap.music_pause);
                 }
             }
-            //更新前台服务
+            // update foreground notification
             updateNotification();
         }
     }

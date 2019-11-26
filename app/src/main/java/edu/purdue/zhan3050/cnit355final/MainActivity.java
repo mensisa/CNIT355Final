@@ -27,8 +27,8 @@ import java.util.List;
 import java.util.Map;
 
 /*
-     Music Player
-     Read all music from external storage and show all information of the audio file
+ * Music Player
+ * Read all music from external storage and show all information of the audio file
  */
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -63,18 +63,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         MusicListView = (ListView) findViewById(R.id.MusicListView);
-        //首先检查自身是否已经拥有相关权限，拥有则不再重复申请
         int check = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        //没有相关权限
         if (check != PackageManager.PERMISSION_GRANTED) {
-            //申请权限
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORGE_REQUEST);
         } else {
-            //已有权限的情况下可以直接初始化程序
             init();
         }
 
-        //启动服务
+        // start intent
         intent = new Intent();
         intent.setClass(MainActivity.this, MusicPlayerService.class);
 
@@ -84,18 +80,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //程序退出时，终止服务
+        // when onDestroy stop the intent
         stopService(intent);
     }
 
     /*
-        界面列表初始化
-         */
+     * initiate ListView
+     */
     private void init() {
-        //获取系统的ContentResolver
+        // use ContentResolver connect to system database
         contentResolver = getContentResolver();
 
-        //从数据库中获取指定列的信息
+        // fetch music information from external storage using cursor
         mCursor = contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 new String[]{MediaStore.Audio.Media._ID,
                         MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.ALBUM,
@@ -109,10 +105,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             Map<String, String> map = new HashMap<>();
             MusicInfo musicInfo = new MusicInfo();
 
-            //列表移动
+            // move the cursor to the next
             mCursor.moveToNext();
 
-            //将数据装载到List<MusicInfo>中
+            // store musicInfo into List<MusicInfo>中
             musicInfo.set_id(mCursor.getInt(0));
             musicInfo.setTitle(mCursor.getString(1));
             musicInfo.setAlbum(mCursor.getString(2));
@@ -121,16 +117,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             musicInfo.setMusicName(mCursor.getString(5));
             musicInfo.setSize(mCursor.getInt(6));
             musicInfo.setData(mCursor.getString(7));
-            //将数据装载到List<Map<String ,String>>中
-            //获取本地音乐专辑图片
-            String MusicImage = getAlbumArt(mCursor.getInt(8));
-            //判断本地专辑的图片是否为空
+            // store data into List<Map<String ,String>>
+            // get the music image
+            String MusicImage = getAlbumImage(mCursor.getInt(8));
+            // check if the music has a image
             if (MusicImage == null) {
-                //为空，用默认图片
+                // if null, use a default image
                 map.put("image", String.valueOf(R.mipmap.timg));
                 musicInfo.setAlbum_id(String.valueOf(R.mipmap.timg));
             } else {
-                //不为空，设定专辑图片为音乐显示的图片
+                // if not null set the music
                 map.put("image", MusicImage);
                 musicInfo.setAlbum_id(MusicImage);
             }
@@ -139,9 +135,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
             map.put("name", mCursor.getString(5));
-            //将获取的音乐大小由Byte转换成mb 并且用float个数的数据表示
+            // convert the size of the music from byte to MB
             Float size = (float) (mCursor.getInt(6) * 1.0 / 1024 / 1024);
-            //对size这个Float对象进行保留两位小数处理
             BigDecimal b = new BigDecimal(size);
             Float f1 = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
             map.put("size", f1.toString() + "MB");
@@ -149,36 +144,37 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
         }
-        //SimpleAdapter实例化
+        // instantiate SimpleAdapter
         simpleAdapter = new SimpleAdapter(this, List_map, R.layout.music_adapte_view,
                 new String[]{"image", "name", "size"}, new int[]{R.id.MusicImage,
                 R.id.MusicName, R.id.MusicSize});
-        //为ListView对象指定adapter
+        // set adapter for ListView
         MusicListView.setAdapter(simpleAdapter);
-        //绑定item点击事件
+        // set onClick listener for MusicList item
         MusicListView.setOnItemClickListener(this);
     }
 
     /*
-        获取本地音乐专辑的图片
+     * get the image of the music
      */
-    private String getAlbumArt(int album_id) {
+    private String getAlbumImage(int album_id) {
         String UriAlbum = "content://media/external/audio/albums";
-        String projecttion[] = new String[]{"album_art"};
+        String projection[] = new String[]{"album_art"};
+        // use cursor to fetch album image
         Cursor cursor = contentResolver.query(Uri.parse(UriAlbum + File.separator + Integer.toString(album_id)),
-                projecttion, null, null, null);
+                projection, null, null, null);
         String album = null;
         if (cursor.getCount() > 0 && cursor.getColumnCount() > 0) {
             cursor.moveToNext();
             album = cursor.getString(0);
         }
-        //关闭资源数据
+        // close cursor
         cursor.close();
         return album;
     }
 
-    /*
-    申请权限处理结果
+    /**
+     * result for permission request
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -186,19 +182,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         switch (requestCode) {
             case STORGE_REQUEST:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //完成程序的初始化
+                    // initiate the app
                     init();
-                    System.out.println("程序申请权限成功，完成初始化");
+                    System.out.println("Get permissions");
                 } else {
-                    System.out.println("程序没有获得相关权限，请处理");
+                    System.out.println("Didn't get permissions");
                 }
                 break;
         }
 
     }
 
-    /*
-       item点击实现
+    /**
+     * perform actions when item clicked
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -206,18 +202,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         String MusicData = musicInfos.get(position).getData();
         System.out.println("THE MUSIC DATA IS " + MusicData);
 
-        //将点击位置传递给播放界面，在播放界面获取相应的音乐信息再播放。
+        // send the position of the clicked item to MusicPlay, get MusicInfo and play music
         Bundle bundle = new Bundle();
         bundle.putInt("position", position);
         bundle.putSerializable("musicinfo", (Serializable) getMusicInfos());
         Intent intent = new Intent();
-        //绑定需要传递的参数
         intent.putExtras(bundle);
         intent.setClass(this, MusicPlay.class);
         startActivity(intent);
     }
 
-    //播放Activity调用方法来获取MusicMediainfo数据
+    // Method to get MusicInfo
     public List<MusicInfo> getMusicInfos() {
         return musicInfos;
     }
