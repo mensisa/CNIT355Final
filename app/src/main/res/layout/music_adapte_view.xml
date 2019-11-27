@@ -4,13 +4,6 @@
     android:orientation="horizontal"
     android:layout_height="match_parent">
 
-    <!--<TextView-->
-        <!--android:id="@+id/MusicTitle"-->
-        <!--android:layout_width="80dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="3dp"-->
-        <!--android:layout_marginLeft="5dp"-->
-        <!--/>-->
     <ImageView
         android:id="@+id/MusicImage"
         android:layout_width="60dp"

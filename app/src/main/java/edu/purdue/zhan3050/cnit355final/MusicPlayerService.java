@@ -29,21 +29,18 @@ import java.util.List;
 
 public class MusicPlayerService extends Service {
 
-    public static List<MusicInfo> musicInfoList; //音乐列表
-    public static int position = -1;  //音乐索引
-    public static MediaPlayer mediaPlayer = null; //音乐播放器
-    private final static int NOTIFICATION_ID = 1; //标识码
-    private final static int NOTIFICATION_NEXT = 2; //下一首的请求码
-    private final static int NOTIFICATION_PRE = 3; //上一首的请求码
-    private final static int NOTIFICATION_PLAY = 4; //播放和暂停的请求码
-    private final static int NOTIFICATION_TOUCH = 5;  //点击
-    private final static int NOTIFICATION_DELETE = 6; //删除。没用
+    public static List<MusicInfo> musicInfoList;
+    public static int position = -1;
+    public static MediaPlayer mediaPlayer = null;
+    private final static int NOTIFICATION_ID = 1;
+    private final static int NOTIFICATION_NEXT = 2;
+    private final static int NOTIFICATION_PRE = 3;
+    private final static int NOTIFICATION_PLAY = 4;
+    private final static int NOTIFICATION_TOUCH = 5;
+    private final static int NOTIFICATION_DELETE = 6;
     public MusicBind musicBind = new MusicBind();
-    //当前播放时间
     private int currentTime;
-    //音乐时常
     private int duration;
-    //音乐控制器
     private AudioControl audioControl;
     /*
      * Check if the music is playing
@@ -106,7 +103,6 @@ public class MusicPlayerService extends Service {
 
         String channelId = "CNIT355";
         mBuilder = new NotificationCompat.Builder(MusicPlayerService.this);
-        mBuilder.setSmallIcon(R.mipmap.title);
         mBuilder.setContentTitle("MusicPlay");
         mBuilder.setContentText("Enjoy the music.");
         mBuilder.setAutoCancel(false);
@@ -157,17 +153,12 @@ public class MusicPlayerService extends Service {
             remoteViews.setImageViewBitmap(R.id.remoteViewImageId, bt);
 
         }
-        //自定义View
         mBuilder.setContent(remoteViews);
-        //更新
         notification2 = mBuilder.build();
-        //更新前台服务
+        //update foreground notification
         startForeground(NOTIFICATION_ID, notification2);
     }
 
-    /*
-    销毁数据
-     */
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -177,40 +168,36 @@ public class MusicPlayerService extends Service {
             mediaPlayer.release();
             mediaPlayer = null;
         }
-        //注销广播
         unregisterReceiver(musicPlayReceiver);
     }
 
     /*
-    设置歌曲索引
+     * set the index of the current song
      */
-    public void setIndex(int indexx) {
+    public void setIndex(int index) {
         /*
         判断用户点击的歌曲是否时当前正在播放的歌曲
          */
-        if (indexx != position) {
+        if (index != position) {
             MUSIC_STATE = false;
         } else {
             MUSIC_STATE = true;
         }
-        position = indexx;
+        position = index;
     }
 
     /*
-    设置音乐列表
+     * set MusicInfo List
      */
     public void setMusicInfoList(List<MusicInfo> musicInfoListt) {
         musicInfoList = musicInfoListt;
     }
 
     /*
-    如果点击的歌曲和当前歌曲不一致则停止之前的歌曲，并且播放新的歌曲
-    如果点击的歌曲和当前歌曲一直，则不做处理重新播放处理，但需要做同步处理
+     * set MediaPlayer
      */
     public void setMediaPlayer(MediaPlayer mediaPlayerr) {
-        /*
-        初始为空状态
-         */
+
         if (mediaPlayer == null) {
             mediaPlayer = mediaPlayerr;
             mediaPlayer.start();
@@ -218,12 +205,7 @@ public class MusicPlayerService extends Service {
             mediaPlayer.stop();
             mediaPlayer = mediaPlayerr;
             mediaPlayer.start();
-            //  Toast.makeText(this , "音乐开始播放" , Toast.LENGTH_SHORT).show();
         }
-        //如果点击的歌曲和当前歌曲一致.同步处理
-        /*
-        歌词同步和音乐控制进度条同步
-         */
         else {
 
             Intent intent1 = new Intent();
@@ -242,17 +224,12 @@ public class MusicPlayerService extends Service {
     private class MusicPlayReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            //对音乐状态进行判断：如果处于播放状态，则停止播放，并且修改按钮图片，设置按钮isPasuse为true
-
             if (intent.getStringExtra("AudioControl") == null) {
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
-                    remoteViews.setImageViewResource(R.id.remoteViewPlayBtn, R.mipmap.music_pause);
+                    remoteViews.setImageViewResource(R.id.remoteViewPlayBtn, R.mipmap.music_play);
                     AudioControl.isPause = true;
                 } else {
-                /*
-                停滞状态下，除了需要修改按钮图片外。还要判断该歌曲是否有播放进度，有则需要跳转到播放处
-                 */
                     if (currentTime == 0) {
                         mediaPlayer.start();
                     } else {
@@ -260,14 +237,14 @@ public class MusicPlayerService extends Service {
                         mediaPlayer.seekTo(currentTime);
                     }
                     AudioControl.isPause = false;
-                    remoteViews.setImageViewResource(R.id.remoteViewPlayBtn, R.mipmap.music_play);
+                    remoteViews.setImageViewResource(R.id.remoteViewPlayBtn, R.mipmap.music_pause);
 
                 }
             } else {
                 if (AudioControl.isPause == false) {
-                    remoteViews.setImageViewResource(R.id.remoteViewPlayBtn, R.mipmap.music_play);
-                } else {
                     remoteViews.setImageViewResource(R.id.remoteViewPlayBtn, R.mipmap.music_pause);
+                } else {
+                    remoteViews.setImageViewResource(R.id.remoteViewPlayBtn, R.mipmap.music_play);
                 }
             }
             // update foreground notification

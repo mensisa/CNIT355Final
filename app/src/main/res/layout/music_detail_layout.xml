@@ -18,29 +18,30 @@
         android:scaleType="fitCenter"
 
         />
-    <!--<ImageButton-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:src="@mipmap/circle"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_marginRight="10dp"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--/>-->
-
+    <ImageButton
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@mipmap/arrow_left"
+        android:background="#FFFFFF"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:onClick="backToMain"
+        />
 
 
     <TextView
         android:id="@+id/MusicName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:gravity="center"
-        android:textColor="#332933"
         android:layout_marginTop="5dp"
-        android:typeface="serif"
-        android:singleLine="true"
         android:ellipsize="end"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="#332933"
+        android:textSize="25dp"
+        android:typeface="serif"
 
         />
 
@@ -49,13 +50,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/MusicName"
-        android:textSize="20dp"
-        android:textColor="#746274"
-        android:gravity="center"
-        android:layout_marginTop="5dp"
-        android:typeface="normal"
-        android:singleLine="true"
+        android:layout_marginTop="6dp"
         android:ellipsize="end"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="#746274"
+        android:textSize="15dp"
+        android:typeface="normal"
 
         />
 
