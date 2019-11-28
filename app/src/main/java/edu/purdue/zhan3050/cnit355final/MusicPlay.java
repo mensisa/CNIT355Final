@@ -101,7 +101,7 @@ public class MusicPlay extends Activity implements GestureDetector.OnGestureList
             e.printStackTrace();
         }
 
-        detector = new GestureDetector((GestureDetector.OnGestureListener) this);
+        detector = new GestureDetector(this.getApplicationContext(),(GestureDetector.OnGestureListener) this);
 
         init();
         /*
