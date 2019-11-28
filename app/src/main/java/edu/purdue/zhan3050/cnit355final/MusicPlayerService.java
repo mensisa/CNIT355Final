@@ -205,8 +205,7 @@ public class MusicPlayerService extends Service {
             mediaPlayer.stop();
             mediaPlayer = mediaPlayerr;
             mediaPlayer.start();
-        }
-        else {
+        } else {
 
             Intent intent1 = new Intent();
             intent1.setAction("MUSCI_BROADCAST");

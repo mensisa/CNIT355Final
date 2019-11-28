@@ -7,15 +7,15 @@ import java.io.Serializable;
  */
 
 public class MusicInfo implements Serializable {
-    private int _id = -1;       //music id
-    private int duration = -1;   //music duration
-    private String artist = null;    //music artist
-    private String musicName = null; // music name
-    private String album = null;   // music album
-    private String title = null;  // music title
-    private int size;   //music size in byte
-    private String data;  //path for music file
-    private String album_id; //album picture for the music
+    private int _id;            //music id
+    private int duration;       //music duration
+    private String artist;      //music artist
+    private String musicName;   // music name
+    private String album;       // music album
+    private String title;       // music title
+    private int size;           //music size in byte
+    private String data;        //path for music file
+    private String album_id;    //album picture for the music
 
 
     public String getAlbum_id() {

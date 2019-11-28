@@ -23,12 +23,12 @@ import android.widget.TextView;
 public class AudioControl extends RelativeLayout implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
     private Context mContext;
-    private ImageView imagePlay;   // play or pause button
-    private ImageView imageNext;   // next song button
-    private ImageView imagePre;    // previous song button
+    private ImageView imagePlay;    // play or pause button
+    private ImageView imageNext;    // next song button
+    private ImageView imagePre;     // previous song button
     private TextView currentText;   //current time textView
-    private TextView totalText;   //total time textView
-    private SeekBar seekBar;     //seekBar
+    private TextView totalText;     //total time textView
+    private SeekBar seekBar;        //seekBar
     private static final int DIP_80 = 80;
     private static final int DIP_10 = 10;
     private int layoutViewId = 0x7F24FF00;

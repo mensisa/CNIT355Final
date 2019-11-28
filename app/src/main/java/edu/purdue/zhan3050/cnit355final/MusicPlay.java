@@ -90,9 +90,9 @@ public class MusicPlay extends Activity implements GestureDetector.OnGestureList
         try {
             musicInfosList = (List<MusicInfo>) bundle.getSerializable("musicinfo");
             position = bundle.getInt("position");
-           /*
-            * Check if the get the position info
-            */
+            /*
+             * Check if the get the position info
+             */
             System.out.println("position is " + position + "" +
                     "\n MUSICINFOLIST DATA IS  " + musicInfosList.get(position).getData());
 
@@ -101,7 +101,7 @@ public class MusicPlay extends Activity implements GestureDetector.OnGestureList
             e.printStackTrace();
         }
 
-        detector = new GestureDetector(this.getApplicationContext(),(GestureDetector.OnGestureListener) this);
+        detector = new GestureDetector(this.getApplicationContext(), (GestureDetector.OnGestureListener) this);
 
         init();
         /*
@@ -111,9 +111,9 @@ public class MusicPlay extends Activity implements GestureDetector.OnGestureList
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 MusicPlayerService.MusicBind bind = (MusicPlayerService.MusicBind) service;
-                   /*
-                    * sync the current music to MusicPlayerService
-                    */
+                /*
+                 * sync the current music to MusicPlayerService
+                 */
                 playerService = bind.getService();
                 playerService.setIndex(position);
                 playerService.setMusicInfoList(musicInfosList);
@@ -293,8 +293,7 @@ public class MusicPlay extends Activity implements GestureDetector.OnGestureList
             intent.putExtra("NEXT", "NEXT");
             intent.putExtra("PRE", "");
             this.sendBroadcast(intent);
-        }
-        else if (e2.getX() - e1.getX() >= 300 && Math.abs(velocityX) >= 40) {
+        } else if (e2.getX() - e1.getX() >= 300 && Math.abs(velocityX) >= 40) {
             Intent intent = new Intent();
             intent.setAction("MUSCI_SWITCH");
             intent.putExtra("NEXT", "");
@@ -345,8 +344,7 @@ public class MusicPlay extends Activity implements GestureDetector.OnGestureList
             System.out.println("MUSICSWICTH broadcast received");
             if (!intent.getStringExtra("NEXT").isEmpty() && intent.getStringExtra("NEXT").equals("NEXT")) {
                 mediaPlayer.seekTo(mediaPlayer.getDuration());
-                if (AudioControl.isPause)
-                {
+                if (AudioControl.isPause) {
                     AudioControl.isPause = false;
                     mediaPlayer.start();
                     Intent intentPlay = new Intent("MUSCIPLAY_BROADCAST");
