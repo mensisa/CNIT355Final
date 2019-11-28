@@ -11,3 +11,5 @@
  * Service - 
  * BroadcastReceiver - 
  * Animation - 
+ * GestureDetector
+ * Auto-scrolling TextView
