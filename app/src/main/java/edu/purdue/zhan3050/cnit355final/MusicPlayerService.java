@@ -20,6 +20,7 @@ import java.util.List;
 
 
 /**
+ * @author Yi Zhang
  * Service for music player
  * 1. Get MusicInfo list and return the selected index
  * 2. Start foreground service

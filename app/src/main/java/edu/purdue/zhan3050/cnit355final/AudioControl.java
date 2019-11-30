@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 
 /**
+ * @author Yi Zhang
  * This class is used to handle audio control
  */
 

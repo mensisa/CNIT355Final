@@ -3,6 +3,7 @@ package edu.purdue.zhan3050.cnit355final;
 import java.io.Serializable;
 
 /**
+ * @author Yi Zhang
  * A object that store music information
  */
 

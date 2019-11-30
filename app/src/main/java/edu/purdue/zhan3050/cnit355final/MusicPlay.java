@@ -32,6 +32,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
+ * @author Yi Zhang
  * A class that handle the music play
  */
 

@@ -26,7 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/*
+/**
+ * @author Yi Zhang
  * Music Player
  * Read all music from external storage and show all information of the audio file
  */

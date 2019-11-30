@@ -15,6 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
 /**
+ * @author Yi Zhang
  * A class to create round image view
  */
 
