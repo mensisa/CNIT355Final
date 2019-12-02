@@ -254,7 +254,7 @@ public class MusicPlay extends Activity implements GestureDetector.OnGestureList
     }
 
     /*
-    手势控制接口
+     * Gesture
      */
     @Override
     public boolean onDown(MotionEvent e) {
